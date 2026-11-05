@@ -1,7 +1,7 @@
 #!/bin/bash
 # Installs SwitchMyGit: the right Git identity in every repository.
 #
-#   curl -fsSL https://raw.githubusercontent.com/Pallepadehat/MacGitSwitcher/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/Pallepadehat/SwitchMyGit/main/install.sh | bash
 #
 # It downloads the latest SwitchMyGit.dmg from GitHub Releases, puts the app in /Applications (replacing an older
 # copy) and opens it. It also clears the "downloaded from the internet" flag, so a release that isn't notarized by
@@ -24,7 +24,7 @@ say() { printf '\033[1m==> %s\033[0m\n' "$*"; }
 die() { printf '\033[31mError: %s\033[0m\n' "$*" >&2; exit 1; }
 
 main() {
-  local repo="Pallepadehat/MacGitSwitcher"
+  local repo="Pallepadehat/SwitchMyGit"
   local url="${SWITCHMYGIT_DMG_URL:-https://github.com/${repo}/releases/latest/download/SwitchMyGit.dmg}"
   local dest="${SWITCHMYGIT_INSTALL_DIR:-/Applications}"
   local app="SwitchMyGit.app"

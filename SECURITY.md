@@ -4,7 +4,7 @@ SwitchMyGit edits Git configuration and can reference SSH keys, so security repo
 
 ## Reporting a vulnerability
 
-Please **don't** open a public issue. Use GitHub's [private vulnerability reporting](https://github.com/Pallepadehat/MacGitSwitcher/security/advisories/new).
+Please **don't** open a public issue. Use GitHub's [private vulnerability reporting](https://github.com/Pallepadehat/SwitchMyGit/security/advisories/new).
 
 You'll get a reply within a few days. Once a fix is released, you'll be credited unless you'd rather not be.
 

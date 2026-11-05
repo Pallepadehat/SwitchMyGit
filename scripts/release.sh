@@ -41,10 +41,10 @@ else
   ./scripts/make-dmg.sh --notarize
 fi
 
-NOTES+=$'\n\n'"### Install"$'\n\n```sh\ncurl -fsSL https://raw.githubusercontent.com/Pallepadehat/MacGitSwitcher/main/install.sh | bash\n```'
+NOTES+=$'\n\n'"### Install"$'\n\n```sh\ncurl -fsSL https://raw.githubusercontent.com/Pallepadehat/SwitchMyGit/main/install.sh | bash\n```'
 
 git tag "$TAG"
 git push origin "$TAG"
 gh release create "$TAG" build/SwitchMyGit.dmg --title "SwitchMyGit $VERSION" --notes "$NOTES"
 echo "Released $TAG. Anyone can now install it with:"
-echo "  curl -fsSL https://raw.githubusercontent.com/Pallepadehat/MacGitSwitcher/main/install.sh | bash"
+echo "  curl -fsSL https://raw.githubusercontent.com/Pallepadehat/SwitchMyGit/main/install.sh | bash"

@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Pallepadehat/MacGitSwitcher/actions/workflows/ci.yml"><img src="https://github.com/Pallepadehat/MacGitSwitcher/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/Pallepadehat/SwitchMyGit/actions/workflows/ci.yml"><img src="https://github.com/Pallepadehat/SwitchMyGit/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/badge/macOS-27%2B-blue" alt="macOS 27 or later">
   <img src="https://img.shields.io/badge/Swift-6-orange" alt="Swift 6">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license"></a>
@@ -45,7 +45,7 @@
 You need a Mac on **macOS 27 or later**. Paste this into Terminal:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/Pallepadehat/MacGitSwitcher/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Pallepadehat/SwitchMyGit/main/install.sh | bash
 ```
 
 It downloads the latest release, puts SwitchMyGit in your Applications folder (replacing an older copy), and opens it. Run the same command again to update.
@@ -56,7 +56,7 @@ SwitchMyGit lives in the menu bar. On first launch, Settings opens so you can ad
 <summary><b>Or use the .dmg</b></summary>
 <br>
 
-Download **SwitchMyGit.dmg** from the [latest release](https://github.com/Pallepadehat/MacGitSwitcher/releases/latest), open it and drag SwitchMyGit into Applications.
+Download **SwitchMyGit.dmg** from the [latest release](https://github.com/Pallepadehat/SwitchMyGit/releases/latest), open it and drag SwitchMyGit into Applications.
 
 Releases aren't notarized by Apple yet, so macOS blocks the first launch. Clear the download flag once:
 
@@ -86,8 +86,8 @@ defaults delete com.pallepadehat.SwitchMyGit
 You need **Xcode 27 or later**.
 
 ```sh
-git clone https://github.com/Pallepadehat/MacGitSwitcher.git
-cd MacGitSwitcher
+git clone https://github.com/Pallepadehat/SwitchMyGit.git
+cd SwitchMyGit
 open MacGitSwitcher.xcodeproj    # then press ⌘R
 ```
 

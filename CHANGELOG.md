@@ -14,7 +14,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - Safe installation into `~/.gitconfig`, with backups, verification and rollback.
 - Detection of `[user]` entries that override the default profile, with a one-click fix.
 - Open at login.
-- One-command install: `curl -fsSL https://raw.githubusercontent.com/Pallepadehat/MacGitSwitcher/main/install.sh | bash`.
+- One-command install: `curl -fsSL https://raw.githubusercontent.com/Pallepadehat/SwitchMyGit/main/install.sh | bash`.
 
-[Unreleased]: https://github.com/Pallepadehat/MacGitSwitcher/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/Pallepadehat/MacGitSwitcher/releases/tag/v0.1.0
+[Unreleased]: https://github.com/Pallepadehat/SwitchMyGit/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/Pallepadehat/SwitchMyGit/releases/tag/v0.1.0
