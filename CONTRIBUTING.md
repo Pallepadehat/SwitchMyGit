@@ -12,7 +12,7 @@ Thanks for helping! This guide explains how to get a change merged.
 
 1. Fork and clone the repository.
 2. Run `make test` to check that the core tests pass.
-3. Open `MacGitSwitcher.xcodeproj` and run the `MacGitSwitcher` scheme.
+3. Open `MacGitSwitcher.xcodeproj` and run the `MacGitSwitcher` scheme. To sign with your own team, copy `Config/Local.xcconfig.example` to `Config/Local.xcconfig`.
 4. To avoid touching your real `~/.gitconfig`, pass `-SwitchMyGitHome /tmp/switchmygit-sandbox` as a launch argument. This works in Debug builds only.
 
 ## Making a change
@@ -30,6 +30,18 @@ Thanks for helping! This guide explains how to get a change merged.
 - Write doc comments on types and on any non-obvious function. Explain *why*, not *what*.
 - Prefer small files with one type each, grouped by feature.
 - Run `swift format` if you have it installed; a `.swift-format` file is included.
+
+## Making a release
+
+Releases are made by the maintainer:
+
+1. Bump `MARKETING_VERSION` in the Xcode project (Target → General → Version).
+2. Add a `## [x.y.z] - date` section to `CHANGELOG.md`, and commit.
+3. Run `./scripts/release.sh`. It builds the app, packs it into `SwitchMyGit.dmg`, has Apple notarize it, tags the commit and publishes a GitHub release. `install.sh` always installs the newest release.
+
+Notarizing needs a Developer ID certificate and a one-time `xcrun notarytool store-credentials switchmygit-notary`. Without them, run `./scripts/release.sh --without-notarizing`. It signs with the best certificate you have, and `install.sh` still opens the app without a warning.
+
+To only make the disk image, run `./scripts/make-dmg.sh`. Add `--notarize` for a notarized one.
 
 ## Reporting bugs
 

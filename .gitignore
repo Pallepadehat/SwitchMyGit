@@ -17,3 +17,6 @@ Package.resolved
 dist/
 *.dmg
 *.zip
+
+# Personal signing settings
+Config/Local.xcconfig

@@ -54,6 +54,17 @@ View ─▶ AppState.commit(newConfiguration)
 
 Profiles are referenced by UUID, so renaming a profile never breaks a rule.
 
+## What SwitchMyGit adds to `~/.gitconfig`
+
+One marked block at the very end. Nothing else in the file is changed:
+
+```
+# >>> switchmygit (managed block — edit in the SwitchMyGit app) >>>
+[include]
+	path = "~/.config/switchmygit/switchmygit.gitconfig"
+# <<< switchmygit <<<
+```
+
 ## Precedence
 
 Git keeps the **last** value it reads. `ManagedConfigRenderer` therefore writes:

@@ -2,21 +2,23 @@ PROJECT := MacGitSwitcher.xcodeproj
 SCHEME  := MacGitSwitcher
 PACKAGE := Packages/SwitchMyGitKit
 
-.PHONY: test build release icons format clean
+.PHONY: test build dmg release icons format clean
 
 ## Run the core test suite (real Git, isolated temporary HOME).
 test:
 	swift test --package-path $(PACKAGE)
 
-## Build the app (unsigned).
+## Build build/SwitchMyGit.app.
 build:
-	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Debug \
-		-derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+	./scripts/build.sh
 
-## Build a Release archive. Signing uses the team configured in Xcode.
+## Build build/SwitchMyGit.dmg.
+dmg:
+	./scripts/make-dmg.sh
+
+## Publish a GitHub release (see CONTRIBUTING.md).
 release:
-	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Release \
-		-archivePath build/SwitchMyGit.xcarchive archive
+	./scripts/release.sh
 
 ## Regenerate the app icon, logo and social preview image.
 icons:

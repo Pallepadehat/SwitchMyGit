@@ -1,107 +1,121 @@
 <p align="center">
-  <img src="docs/assets/logo.png" width="128" alt="SwitchMyGit icon">
+  <img src="docs/assets/logo.png" width="160" alt="SwitchMyGit icon: a green switch with a Git branch on its knob">
 </p>
 
 <h1 align="center">SwitchMyGit</h1>
 
 <p align="center">
-  The right Git identity in every repository.<br>
-  A small, native macOS menu bar app for people who commit as more than one person.
+  The right Git identity in every repository. A small menu bar app for anyone who commits as more than one person.
 </p>
 
 <p align="center">
   <a href="https://github.com/Pallepadehat/MacGitSwitcher/actions/workflows/ci.yml"><img src="https://github.com/Pallepadehat/MacGitSwitcher/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <img src="https://img.shields.io/badge/macOS-27%2B-lightgrey" alt="macOS 27+">
-  <img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License">
+  <img src="https://img.shields.io/badge/macOS-27%2B-blue" alt="macOS 27 or later">
+  <img src="https://img.shields.io/badge/Swift-6-orange" alt="Swift 6">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT license"></a>
 </p>
-
----
-
-Have you ever pushed a work commit with your personal e-mail, or the reverse? SwitchMyGit fixes that:
-
-- **Switch your default identity** from the menu bar in one click.
-- **Assign profiles to folders** (`~/Code/work/` → Work) **or remotes** (`github.com/acme` → Work). Git then picks the right identity automatically.
-- **Check any repository** to see which identity your next commit will use, and why.
-- **Optionally pick an SSH key per profile**, so pushes authenticate with the right account.
 
 <p align="center">
-  <img src="docs/assets/screenshot-rules.png" width="600" alt="Rules settings">
+  <img src="docs/assets/screenshot-rules.png" width="560" alt="The Rules tab in SwitchMyGit's settings">
 </p>
 
-## How it works
+## Features
 
-SwitchMyGit **configures Git** instead of watching it. Your rules are compiled into Git's own [conditional includes](https://git-scm.com/docs/git-config#_conditional_includes), so they:
+**Switch in one click**
+- Pick your default identity, such as Personal or Work, from the menu bar.
+- The menu always shows what Git really uses, even if something else changed it.
 
-- work in every terminal, editor and GUI client (VS Code, Xcode, JetBrains, Tower and others),
-- keep working when the app isn't running,
-- use no background CPU.
+**Automatic rules**
+- Assign a profile to a folder: everything in `~/Code/work` commits as Work.
+- Or to a remote: every repository on `github.com/acme` commits as Work, wherever it lives.
+- Nested folders work as you'd expect. The most specific rule wins.
 
-SwitchMyGit adds one clearly marked block at the end of `~/.gitconfig` and keeps everything else in its own folder:
+**Check any repository**
+- Choose a folder and see which identity your next commit will use, and why.
 
-```gitconfig
-# >>> switchmygit (managed block — edit in the SwitchMyGit app) >>>
-[include]
-	path = "~/.config/switchmygit/switchmygit.gitconfig"
-# <<< switchmygit <<<
+**SSH keys per profile**
+- Optionally pick a key for each profile, so pushes authenticate with the right account.
+
+**Safe and invisible**
+- Rules are written into Git's own configuration, so they work in every terminal and editor, even when the app isn't running.
+- `~/.gitconfig` is backed up before every change, and your other settings are never touched.
+
+## Install
+
+You need a Mac on **macOS 27 or later**. Paste this into Terminal:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/Pallepadehat/MacGitSwitcher/main/install.sh | bash
 ```
 
-```text
-~/.config/switchmygit/
-├── switchmygit.gitconfig   # includes the files below, in precedence order
-├── default.gitconfig       # the default profile
-├── profiles/<id>.gitconfig # one file per profile
-└── backups/                # copies of ~/.gitconfig, taken before every change
+It downloads the latest release, puts SwitchMyGit in your Applications folder (replacing an older copy), and opens it. Run the same command again to update.
+
+SwitchMyGit lives in the menu bar. On first launch, Settings opens so you can add your profiles and turn it on.
+
+<details>
+<summary><b>Or use the .dmg</b></summary>
+<br>
+
+Download **SwitchMyGit.dmg** from the [latest release](https://github.com/Pallepadehat/MacGitSwitcher/releases/latest), open it and drag SwitchMyGit into Applications.
+
+Releases aren't notarized by Apple yet, so macOS blocks the first launch. Clear the download flag once:
+
+```sh
+xattr -dr com.apple.quarantine /Applications/SwitchMyGit.app
 ```
 
-Precedence, from weakest to strongest:
+The install script does this for you. It's [short and readable](install.sh), if you'd like to check it first.
 
-1. The **default profile** (switchable from the menu bar)
-2. **Folder rules**, where nested folders beat their parents
-3. **Remote rules**
-4. A repository's own **`.git/config`**, which SwitchMyGit always respects
+</details>
 
-Before every change SwitchMyGit backs up `~/.gitconfig`, writes the new files atomically, asks Git to read them back, and restores the previous state if anything fails. Turning SwitchMyGit off removes only the block and the folder above, and can keep your current identity in `~/.gitconfig`.
+<details>
+<summary><b>Uninstall</b></summary>
+<br>
 
-## Installation
+First open **Settings → General** and switch off **Manage Git identity**. This restores your `~/.gitconfig`. Then quit SwitchMyGit from its menu and run:
 
-Signed releases will be published on the [Releases](https://github.com/Pallepadehat/MacGitSwitcher/releases) page. Until then, build it yourself:
+```sh
+rm -rf /Applications/SwitchMyGit.app ~/.config/switchmygit "$HOME/Library/Application Support/SwitchMyGit"
+defaults delete com.pallepadehat.SwitchMyGit
+```
+
+</details>
+
+### Build it yourself
+
+You need **Xcode 27 or later**.
 
 ```sh
 git clone https://github.com/Pallepadehat/MacGitSwitcher.git
 cd MacGitSwitcher
-open MacGitSwitcher.xcodeproj   # then press ⌘R
+open MacGitSwitcher.xcodeproj    # then press ⌘R
 ```
 
-Requirements: macOS 27 or later, Git 2.36 or later (for remote rules), and Xcode 27 to build.
+Or build from the command line with `./scripts/build.sh`.
 
-## Project layout
+Builds work without an Apple developer team. To sign with yours, copy `Config/Local.xcconfig.example` to `Config/Local.xcconfig` and add your team ID. That file is git-ignored.
 
-```text
-MacGitSwitcher/               SwiftUI app (menu bar menu, Settings window)
-├── App/                      Entry point, AppState, dependency wiring
-├── Features/                 One folder per feature: MenuBar, Settings, Profiles, Rules, RepositoryCheck
-├── Components/               Small reusable views
-└── Support/                  AppKit helpers (panels, alerts, login item)
-Packages/SwitchMyGitKit/      Swift package with all logic. No UI code; fully unit-tested.
-├── Sources/SwitchMyGitCore/  Models, Git client, config renderer, services
-└── Tests/                    Unit tests and end-to-end tests against real Git
-scripts/                      Icon generator and other tooling
-docs/                         Architecture notes and images
-```
+## Privacy
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the design.
+SwitchMyGit makes no network requests and collects nothing. It never reads or copies your SSH keys; it only stores their paths. Your profiles are saved locally in `~/Library/Application Support/SwitchMyGit`.
 
-## Development
+The app isn't sandboxed, because the sandbox doesn't allow editing `~/.gitconfig` or running `git`.
 
-```sh
-make test     # run the core test suite (uses real Git in a throwaway HOME)
-make build    # build the app
-make icons    # regenerate the app icon from scripts/generate-icons.swift
-```
+## How it's built
 
-Debug builds accept `-SwitchMyGitHome /some/folder` as a launch argument, so you can try the app against a sandbox home without touching your real `~/.gitconfig`. In Xcode, add it under *Product › Scheme › Edit Scheme › Arguments*.
+| Folder | What's inside |
+| --- | --- |
+| [`Packages/SwitchMyGitKit`](Packages/SwitchMyGitKit) | All the logic: profiles, rules, the Git client, and safe config writing. Pure Swift with no UI, and fully tested against real Git. |
+| [`MacGitSwitcher/App`](MacGitSwitcher/App) | The app entry point and `AppState`, which the views read from. |
+| [`MacGitSwitcher/Features`](MacGitSwitcher/Features) | The menu bar menu, the Settings tabs and Check Repository. |
+| [`scripts`](scripts) | Building, packaging and releasing, plus `generate-icons.swift`, which draws the app icon. |
+| [`install.sh`](install.sh) | The one-command installer. |
 
-Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md).
+Curious how it works under the hood? See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Contributing
+
+Contributions are very welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

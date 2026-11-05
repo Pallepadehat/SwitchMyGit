@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   test:
-    name: Core tests
+    name: SwitchMyGitKit tests
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,12 +20,43 @@ jobs:
           git config --global user.name "CI"
           git config --global user.email "ci@example.com"
       - name: Run tests
-        run: make test
+        working-directory: Packages/SwitchMyGitKit
+        run: swift test
+
+  install-script:
+    name: Check install.sh
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax check
+        run: bash -n install.sh && zsh -n scripts/*.sh
 
   build:
     name: Build app
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      # The project uses Xcode 27's project format, which older Xcode versions
+      # can't open. Skip (with a notice) until the runners have Xcode 27.
+      - name: Check the Xcode version
+        id: xcode
+        run: |
+          major=$(xcodebuild -version | head -1 | awk '{print $2}' | cut -d. -f1)
+          if [ "$major" -ge 27 ]; then
+            echo "supported=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice title=App build skipped::The project needs Xcode 27 or later; this runner has Xcode $major."
+            echo "supported=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Build
-        run: make build
+        if: steps.xcode.outputs.supported == 'true'
+        run: |
+          xcodebuild build \
+            -project MacGitSwitcher.xcodeproj \
+            -scheme MacGitSwitcher \
+            -configuration Release \
+            -destination 'platform=macOS' \
+            CODE_SIGNING_ALLOWED=NO
